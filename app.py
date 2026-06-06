@@ -36,9 +36,6 @@ app.config['SECRET_KEY'] = 'my-super-secret-key'
     
 db = SQLAlchemy(app)
 
-with app.app_context():
-    db.create_all()
-
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key= True)
     username = db.Column(db.String(100), unique=True, nullable=False)
@@ -467,6 +464,9 @@ def export_csv():
             "Content-Disposition": f"attachment; filename=expenses_{today}.csv"
         }
     )
+
+with app.app_context():
+    db.create_all()
 
 if __name__ == '__main__':
     app.run(debug=True)
