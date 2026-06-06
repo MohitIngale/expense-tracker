@@ -36,6 +36,9 @@ app.config['SECRET_KEY'] = 'my-super-secret-key'
     
 db = SQLAlchemy(app)
 
+with app.app_context():
+    db.create_all()
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key= True)
     username = db.Column(db.String(100), unique=True, nullable=False)
