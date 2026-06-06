@@ -1,0 +1,116 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Edit Expense</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+    <div class="container mt-5">
+
+        <h1>Edit Expense</h1>
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Expense Title</label>
+                <input type="text" name="title" class="form-control" value="{{expense.title}}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Amount</label>
+                <input step="0.01" name="amount" class="form-control" value="{{expense.amount}}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <input type="text" name="category" class="form-control" value="{{expense.category}}">
+            </div>
+
+            <button class="btn btn-warning">
+                Update Expense
+            </button>
+            <button class="btn btn-danger">
+                Cancel
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html> -->
+
+
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Expense
+{% endblock %}
+
+{% block content %}
+
+    <h1>Edit Expense</h1>
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Expense Title</label>
+                <input type="text" name="title" class="form-control" value="{{expense.title}}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Amount</label>
+                <input step="0.01" name="amount" class="form-control" value="{{expense.amount}}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select name="category" class="form-select">
+                    <option value="Food" 
+                        {% if expense.category == "Food" %}
+                            selected
+                        {% endif %}
+                    >Food</option>
+                    <option value="Fuel" 
+                        {% if expense.category == "Fuel" %}
+                            selected
+                        {% endif %}
+                    >Fuel</option>
+                    <option value="Shopping" 
+                        {% if expense.category == "Shopping" %}
+                            selected
+                        {% endif %}
+                    >Shopping</option>
+                    <option value="Entertainment" 
+                        {% if expense.category == "Entertainment" %}
+                            selected
+                        {% endif %}
+                    >Entertainment</option>
+                    <option value="Travel" 
+                        {% if expense.category == "Travel" %}
+                            selected
+                        {% endif %}
+                    >Travel</option>
+                    <option value="Healthcare" 
+                        {% if expense.category == "Healthcare" %}
+                            selected
+                        {% endif %}
+                    >Healthcare</option>
+                </select>
+            </div>
+
+            <button class="btn btn-warning">
+                Update Expense
+            </button>
+            <button class="btn btn-danger">
+                Cancel
+            </button>
+
+        </form>
+
+{% endblock %}

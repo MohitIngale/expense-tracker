@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4">Dashboard</h1>
+
+<a href="{{ url_for('export_csv') }}" class="btn btn-success">Export CSV</a>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5>Total Expenses</h5>
+                <h2>₹{{ total_spent }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5>Total Records</h5>
+                <h2>{{ total_expenses }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5>Average Expense</h5>
+                <h2>{{ avg_expense }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5>Max Expense</h5>
+                <h2>₹{{ max_expense }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>This Month</h5>
+                <h2>{{ monthly_total }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>Today's Expense</h5>
+                <h2>{{ todays_expense }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>Yearly Expense</h5>
+                <h2>{{ year_total }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<h3>Spending By Category</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category, total in category_totals %}
+            <tr>
+                <td>{{ category }}</td>
+                <td>₹{{ total }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Expense Distribution</h3>
+<canvas id="expenseChart"></canvas>
+
+<hr>
+<h3>Monthly Spending Trend</h3>
+<canvas id="trendChart"></canvas>
+
+{% if top_category %}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5>Top Spending Category</h5>
+            <h3>{{ top_category[0] }}</h3>
+            <p>₹ {{ top_category[1] }}</p>
+        </div>
+    </div>
+{% endif %}
+{% if lowest_category %}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5>Lowest Spending Category</h5>
+            <h3>{{ lowest_category[0] }}</h3>
+            <p>₹ {{ lowest_category[1] }}</p>
+        </div>
+    </div>
+{% endif %}
+{% if category_length %}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5>Total Categories</h5>
+            <p>{{ category_length }}</p>
+        </div>
+    </div>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const labels = JSON.parse('{{ labels | tojson }}');
+    const amounts = JSON.parse('{{ amounts | tojson }}');
+
+    const ctx = document.getElementById("expenseChart");
+
+    new Chart(ctx, {type: "pie", data:{ labels: labels, datasets: [{data: amounts, borderWidth: 1}]}});
+
+    const trendCtx = document.getElementById("trendChart");
+
+    new Chart(trendCtx, {type: "line", data:{ labels: JSON.parse('{{month_labels | tojson }}'), datasets: [{label: "Monthly Spending", data: JSON.parse('{{month_amounts | tojson}}'), borderWidth: 2}]}});
+</script>
+{% endblock %}
